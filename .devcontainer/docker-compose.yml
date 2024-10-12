@@ -1,0 +1,9 @@
+services:
+  latex:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../:/home/
+    stdin_open: true
+    tty: true
