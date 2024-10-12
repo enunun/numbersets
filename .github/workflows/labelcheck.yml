@@ -1,0 +1,20 @@
+name: PR Label Check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+  merge_group:
+
+jobs:
+  do-not-merge:
+    runs-on: ubuntu-latest
+    name: Label Check
+    steps:
+      - name: check labels
+        uses: mheap/github-action-required-labels@v5
+        with:
+          mode: exactly
+          count: 1
+          labels: "feature,bug,enhancement,documentation,performance,deprecate,style,dependency,ignore-for-release"
+          add_comment: true
+          message: "This PR is being prevented from merging because the label is missing."

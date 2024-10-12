@@ -1,0 +1,39 @@
+# .github/release.yml
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors:
+      - octocat
+  categories:
+  - title: '🚀 Features'
+    labels: 
+      - 'feature'
+  - title: '🐛 Bug Fixes'
+    labels: 
+      - 'bug'
+  - title: '🔧 Enhancements'
+    labels: 
+      - 'enhancement'
+  - title: '📚 Documentation'
+    labels: 
+      - 'documentation'
+  - title: '⚡ Performance Improvements'
+    labels: 
+      - 'performance'
+  - title: '⚠️ Deprecation'
+    labels: 
+      - 'deprecate'
+  - title: '🎨 Style Changes'
+    labels: 
+      - 'style'
+  - title: '🔗 Dependency Updates'
+    labels: 
+      - 'dependency'
+  - title: '🔗 Dependency Updates'
+    labels: 
+      - 'dependency'
+  - title: 'Other changes'
+    labels:
+      - '*'
