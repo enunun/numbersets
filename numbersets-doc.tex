@@ -1,0 +1,301 @@
+% configuration for llmk
+% +++
+% sequence = [ "latex", "makeindex", "latex", "latex" ]
+% latex = "lualatex"
+% makeindex = "mendex"
+% [programs.makeindex]
+% args = ["%B.idx", "-sgind.ist"]
+% +++
+
+\documentclass{l3doc}
+
+\usepackage{makeidx}
+
+% Documentation target
+\usepackage{numbersets} 
+
+\usepackage{booktabs}
+\usepackage{bxtexlogo}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily, escapeinside=||, tabsize=4, columns=fullflexible}
+\usepackage{unicode-math}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{Latin Modern Mono}
+\setmathfont{TeX Gyre Pagella Math}
+
+\NewDocumentCommand{\ThisPackageName}{}{\pkg{numbersets}}
+\NewDocumentCommand{\sourcecode}{m}{\texttt{#1}}
+
+\title{The \ThisPackageName{} Package}
+\author{Takumi Noguchi (enunun)}
+\date{2024-10-13}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Overview}
+
+The \ThisPackageName{} package provides an easy way to implement the common preference for using commands
+that represent the \emph{meaning} of concepts to be expressed,
+rather than focusing solely on their visual appearance.
+For example, using a command like ``\cs[no-index]{RealNumbers}'' to denote the set of all real numbers \(\RealNumbers[style=bb]\) is preferable
+to using a purely visual representation like ``\cs[no-index]{mathbb\{R\}}''.
+
+This package provides the following key features:
+\begin{itemize}
+	\item A command to apply the desired typeface for representing sets of numbers.
+	\item An interface for defining rules that specify the typefaces for these sets.
+	\item An interface for defining commands that represent sets of numbers.
+	\item Several predefined presets for common number sets.
+\end{itemize}
+
+Although the default configuration assumes the use of the \pkg{unicode-math} package for handling mathematical typefaces,
+the \ThisPackageName{} package itself does not load the \pkg{unicode-math} package.
+To use the package with default settings,
+it is required to import the \pkg{unicode-math} package \emph{explicitly} in your document.
+However, since the \pkg{unicode-math} package is not loaded automatically by the \ThisPackageName{} package,
+users can modify their configuration even if the \pkg{unicode-math} package cannot be used.
+See the section \ref{sec:withoutunicode-math} for more details.
+
+
+\section{Package Options}
+\label{sec:packageoptions}
+
+\DescribeOption{style}
+The \ThisPackageName{} package provides a single option for customization:
+the \sourcecode{style} option.
+This option allows users to specify the typeface to be used when displaying number sets,
+and it is defined using a key-value format.
+
+\begin{itemize}
+	\item \sourcecode{bb}: BlackBoard Bold (default), like \(\NumberSet[style = bb]{N}\).
+	\item \sourcecode{bfup}: Bold Upright, like \(\NumberSet[style = bfup]{N}\).
+	\item \sourcecode{bfit}: Bold Italic, like \(\NumberSet[style = bfit]{N}\)
+\end{itemize}
+
+
+\begin{function}{\SetupNumberSetsOptions}
+	\begin{syntax}
+		\cs[no-index]{SetupNumberSetsOptions}\marg{options}
+	\end{syntax}
+	Changes the global options for the \ThisPackageName{} package,
+	which can be applied after the package import or at any point in the document.
+\end{function}
+
+For example, to set the default style to Bold Upright, you would write:
+\begin{lstlisting}
+	\SetupNumberSetsOptions{style=bfup}
+\end{lstlisting}
+
+
+\section{Basic Usage}
+
+The \cs{NumberSet} command allows users to display number sets using the desired typeface.
+The command can be customized by passing an optional \sourcecode{style} argument to specify the typeface locally for the number set.
+While the \sourcecode{style} option of this command affects only the local instance, the values
+it accepts are the same as those used for the package-level \sourcecode{style} option in the Section \ref{sec:packageoptions}.
+
+
+\begin{function}{\NumberSet}
+	\begin{syntax}
+		\cs{NumberSet}\oarg{options}\marg{symbol}
+	\end{syntax}
+	This command displays the specified number set
+	with the typeface defined by the \sourcecode{style} option. If no style is specified, the default style is applied.
+
+	It should be noted that the \cs[no-index]{NumberSet} command is primarily intended for use within math mode,
+	similar to how the \cs[no-index]{mathbb} command is typically used in math mode to display sets like \cs[no-index]{mathbb\{N\}}.
+\end{function}
+
+In the above examples:
+\begin{itemize}
+	\item \cs[no-index]{NumberSet\{N\}}: will be displayed like $\NumberSet{N}$ in the default style.
+	\item \cs[no-index]{NumberSet[style=bb]\{Z\}}: will be displayed like $\NumberSet[style=bb]{Z}$ in the BlackBoard Bold style.
+	\item \cs[no-index]{NumberSet[style=bfup]\{R\}}: will be displayed like $\NumberSet[style=bfup]{R}$ in the Bold Upright style.
+	\item \cs[no-index]{NumberSet[style=bfit]\{C\}}: will be displayed like $\NumberSet[style=bfit]{C}$ in the Bold Italic style.
+\end{itemize}
+
+It is important to note that the \cs[no-index]{NumberSet} command,
+while versatile, is a more generic and less descriptive command.
+For clarity and better readability in the main text,
+it is recommended to use more descriptive commands such as \cs[no-index]{NaturalNumbers} for representing the set of natural numbers.
+These commands provide more context and meaning, making the content easier to understand.
+See the section \ref{sec:customcommand} for defining custom commands for sets of numbers,
+and some presets described in the section \ref{sec:predefinedpresets} are provided by this package.
+
+
+\section{Defining Custom Number Set Commands}
+\label{sec:customcommand}
+
+The \cs{DeclareNumberSetCommand} allows users to define new commands for representing number sets with specific names,
+enhancing readability and semantic clarity in documents. This command can be particularly useful
+when you want to create descriptive names for commonly used number sets.
+
+\begin{function}{\DeclareNumberSetCommand}
+	\begin{syntax}
+		\cs{DeclareNumberSetCommand}\marg{name}\marg{symbol}
+	\end{syntax}
+	This command defines a new number set command. The first argument \meta{name} specifies the name of the new command,
+	while the second argument \meta{symbol} represents the symbol that will be displayed.
+\end{function}
+
+For example, to define a command for the set of all quaternions by \(\NumberSet{H}\), you would write:
+\begin{lstlisting}
+	\DeclareNumberSetCommand{Quaternions}{H}
+\end{lstlisting}
+
+Once defined, you can use the new command \cs[no-index]{Quaternions} in your document to display the symbol for the set of all quaternions.
+In addition, you can use the optional argument \sourcecode{style} to specify the typeface locally,
+similar to the \cs[no-index]{NumberSet} command.
+To display the set of all quaternions that you just defined above, you would write:
+\begin{lstlisting}
+	\Quaternions[style=bfup]
+\end{lstlisting}
+
+Internally, the definition using \cs[no-index]{DeclareNumberSetCommand}\marg{name}\marg{symbol} is equivalent to the following definition:
+\begin{lstlisting}
+	\NewDocumentCommand\|\meta{name}|
+	{o}
+	{
+		\IfValueTF{#1}
+        {
+            \NumberSet[#1]{|\meta{symbol}|}
+        }
+        {
+            \NumberSet{|\meta{symbol}|}
+        }
+	}
+\end{lstlisting}
+
+\section{Defining Custom Number Set Styles}
+
+The \cs{DeclareNumberSetStyle} command allows users to define (or overwrite)
+new styles (or registered styles) for displaying number sets,
+giving users greater control over the typeface used.
+This command can be useful when the built-in styles are insufficient for specific design needs.
+
+\begin{function}{\DeclareNumberSetStyle}
+	\begin{syntax}
+		\cs{DeclareNumberSetStyle}\marg{style}\marg{command}
+	\end{syntax}
+	This command defines a new style for number sets. The first argument \meta{style} specifies the name of the style,
+	and the second argument \meta{command} indicates the typeface command that will be applied when this style is selected.
+\end{function}
+
+For example, to define a new style using a bold sans-serif font, you would write:
+\begin{lstlisting}
+	\DeclareNumberSetStyle{boldsans}{\symbfsfup}
+\end{lstlisting}
+Once defined, you can use the identifier ``\sourcecode{boldsans}'' for the value of \sourcecode{style} option
+in the following commands:
+\begin{itemize}
+	\item \cs[no-index]{NumberSet} command
+	\item \cs[no-index]{SetupNumberSetsOptions} command
+	\item Custom command defined by the \cs[no-index]{DeclareNumberSetCommand} command
+\end{itemize}
+
+It should be noted that the \meta{command} argument of the \cs[no-index]{DeclareNumberSetStyle} command
+can accept \emph{only} a single control sequence.
+Namely, combinations of multiple commands (e.g., \cs[no-index]{overline\cs[no-index]{symbb}}) are not supported.
+To avoid this limitation, you should define a single control sequence as an abbreviation for the combinations.
+In this case, you should define an abbreviation like ``\cs[no-index]{bbline}'';
+after that, you can define the style identifier using this single control sequence:
+\begin{lstlisting}
+	\NewDocumentCommand\bbline{m}{\overline{\symbb{#1}}}
+	\DeclareNumberSetStyle{bbline}{\bbline}
+\end{lstlisting}
+
+The values (\sourcecode{bb}, \sourcecode{bfup}, \sourcecode{bfit}) provided by default for the style option
+can be considered as pre-defined identifiers that the \cs[no-index]{DeclareNumberSetStyle} command declares.
+The Table \ref{tab:predefinedidentifier} shows
+the list of predefined identifiers and the commands corresponding to each identifier.
+\begin{table}[h]
+	\centering
+	\caption{Predefined identifiers for the values of the \sourcecode{style} option}
+	\label{tab:predefinedidentifier}
+	\begin{tabular}{cc}
+		\toprule
+		Identifer         & Command                \\
+		\midrule
+		\sourcecode{bb}   & \cs[no-index]{symbb}   \\
+		\sourcecode{bfup} & \cs[no-index]{symbfup} \\
+		\sourcecode{bfit} & \cs[no-index]{symbfit} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+\section{Using Without the \pkg{unicode-math} Package}
+\label{sec:withoutunicode-math}
+
+Although the default configuration of this package assumes the use of \pkg{unicode-math} package for handling mathematical typefaces,
+the \ThisPackageName{} package itself does not load the \pkg{unicode-math} package.
+Therefore, you can use the \ThisPackageName{} package without the \pkg{unicode-math} package by overriding the default configuration.
+
+Here is an example to use the \ThisPackageName{} package with \pkg{amssymb} package for blackboard bold symbols and \pkg{bm} package for bold italic symbols:
+\begin{lstlisting}
+	\usepackage{amssymb}
+	\usepackage{bm}
+	\usepackage{numbersets}
+	\DeclareNumberSetStyle{bb}{\mathbb}
+	\DeclareNumberSetStyle{bfup}{\mathbf}
+	\DeclareNumberSetStyle{bfit}{\bm}
+	...
+	% in the document
+	% equivalent to \mathbb{P}
+	\NumberSet[style=bb]{P}
+	% equivalent to \mathbf{A}
+	\NumberSet[style=bfup]{A}
+	% equivalent to \bm{H}
+	\NumberSet[style=bfit]{H}
+\end{lstlisting}
+
+Note that you only need to reconfigure the styles that you actually use in your document.
+For example, if you only use the \sourcecode{bb} style, there is no need to reconfigure the unused \sourcecode{bfup} and \sourcecode{bfit} styles.
+
+\section{Predefined Presets for Common Number Sets}
+\label{sec:predefinedpresets}
+
+\begin{function}{\NaturalNumbers, \Integers, \RationalNumbers, \RealNumbers, \ComplexNumbers}
+	Several predefined presets are available in the \ThisPackageName{} package for commonly used number sets.
+	These presets are designed to help you clearly express the intended mathematical meaning,
+	rather than just applying a specific format.
+	The table \ref{tab:predefinednumberset} shows the list
+	of predefined commands for common sets of numbers.
+\end{function}
+
+\begin{table}[h]
+	\centering
+	\caption{Predefined commands for common sets of numbers}
+	\label{tab:predefinednumberset}
+	\begin{tabular}{cc}
+		\toprule
+		Command name         & Output by default    \\
+		\midrule
+		\cs{NaturalNumbers}  & \(\NaturalNumbers\)  \\
+		\cs{Integers}        & \(\Integers\)        \\
+		\cs{RationalNumbers} & \(\RationalNumbers\) \\
+		\cs{RealNumbers}     & \(\RealNumbers\)     \\
+		\cs{ComplexNumbers}  & \(\ComplexNumbers\)  \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\section{Contributing, Issue Reporting, and Repository Access}
+
+The source code for the \ThisPackageName{} package is hosted on GitHub at the following repository:
+\begin{quote}
+	\url{https://github.com/enunun/numbersets}
+\end{quote}
+
+If you have any suggestions, feature requests, or bug reports,
+we encourage you to submit them via the repository's issue tracker.
+This ensures that improvements and fixes are addressed efficiently. You can visit the ``Issues'' tab in the repository to create a new issue.
+
+\printindex
+
+\end{document}

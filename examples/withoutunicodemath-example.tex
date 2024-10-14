@@ -1,0 +1,26 @@
+% configuration for llmk
+% +++
+% latex = "pdflatex"
+% +++
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{numbersets}
+\DeclareNumberSetStyle{bb}{\mathbb}
+\DeclareNumberSetStyle{bfup}{\mathbf}
+\DeclareNumberSetStyle{bfit}{\bm}
+
+\begin{document}
+
+\(
+\NumberSet[style=bb]{N},
+\NumberSet[style=bfup]{Z},
+\NumberSet[style=bfit]{Q},
+\NumberSet{R},
+\NaturalNumbers,
+\Integers,
+\RationalNumbers,
+\RealNumbers,
+\ComplexNumbers
+\)
+\end{document}
