@@ -23,6 +23,7 @@
 \setsansfont{TeX Gyre Heros}
 \setmonofont{Latin Modern Mono}
 \setmathfont{TeX Gyre Pagella Math}
+\usepackage{changelog}
 
 \NewDocumentCommand{\ThisPackageName}{}{\pkg{numbersets}}
 \NewDocumentCommand{\sourcecode}{m}{\texttt{#1}}
@@ -296,6 +297,24 @@ The source code for the \ThisPackageName{} package is hosted on GitHub at the fo
 If you have any suggestions, feature requests, or bug reports,
 we encourage you to submit them via the repository's issue tracker.
 This ensures that improvements and fixes are addressed efficiently. You can visit the ``Issues'' tab in the repository to create a new issue.
+
+\section{Changelog}
+
+The first is the version 0.1.0. The changelog of this package is shown in this seciton.
+
+\begin{changelog}[section=false]
+	\begin{version}[v=0.2.0, date=2024-10-15]
+		\changed
+		\item Modified the \cs[no-index]{DeclareNumberSetCommand} to accept the control sequence directly
+	\end{version}
+	\begin{version}[v=0.1.0, date=2024-10-13]
+		\added
+		\item Provided the \cs[no-index]{NumberSet} command
+		\item Provided the \cs[no-index]{DeclareNumberSetCommand} command
+		\item Provided the \cs[no-index]{DeclareNumberSetStyle} command
+		\item Provided the commands \cs[no-index]{NaturalNumbers}, \cs[no-index]{Integers}, \cs[no-index]{RationalNumbers}, \cs[no-index]{RealNumbers}, \cs[no-index]{ComplexNumbers}
+	\end{version}
+\end{changelog}
 
 \printindex
 
