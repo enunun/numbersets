@@ -137,15 +137,15 @@ when you want to create descriptive names for commonly used number sets.
 
 \begin{function}{\DeclareNumberSetCommand}
 	\begin{syntax}
-		\cs{DeclareNumberSetCommand}\marg{name}\marg{symbol}
+		\cs{DeclareNumberSetCommand}\marg{cs}\marg{symbol}
 	\end{syntax}
-	This command defines a new number set command. The first argument \meta{name} specifies the name of the new command,
+	This command defines a new number set command. The first argument \meta{cs} specifies the control sequence for the new command,
 	while the second argument \meta{symbol} represents the symbol that will be displayed.
 \end{function}
 
 For example, to define a command for the set of all quaternions by \(\NumberSet{H}\), you would write:
 \begin{lstlisting}
-	\DeclareNumberSetCommand{Quaternions}{H}
+	\DeclareNumberSetCommand{\Quaternions}{H}
 \end{lstlisting}
 
 Once defined, you can use the new command \cs[no-index]{Quaternions} in your document to display the symbol for the set of all quaternions.
@@ -156,9 +156,10 @@ To display the set of all quaternions that you just defined above, you would wri
 	\Quaternions[style=bfup]
 \end{lstlisting}
 
-Internally, the definition using \cs[no-index]{DeclareNumberSetCommand}\marg{name}\marg{symbol} is equivalent to the following definition:
+Internally, the definition using \cs[no-index]{DeclareNumberSetCommand}\marg{cs}\marg{symbol}
+is equivalent to the following definition:
 \begin{lstlisting}
-	\NewDocumentCommand\|\meta{name}|
+	\NewDocumentCommand{|\meta{cs}|}
 	{o}
 	{
 		\IfValueTF{#1}
