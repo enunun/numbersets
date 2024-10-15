@@ -87,7 +87,7 @@
 % Command to declare custom commands for set composed of numbers
 \NewDocumentCommand{\DeclareNumberSetCommand}{ m m }
 {
-	\expandafter\NewDocumentCommand\cs:w#1\cs_end:
+	\NewDocumentCommand{#1}
 	{o}
 	{
 		\IfValueTF{##1}
@@ -103,18 +103,18 @@
 % Presets for some sets composed of numbers
 
 % Natural numbers
-\DeclareNumberSetCommand{NaturalNumbers}{N}
+\DeclareNumberSetCommand{\NaturalNumbers}{N}
 
 % Integers
-\DeclareNumberSetCommand{Integers}{Z}
+\DeclareNumberSetCommand{\Integers}{Z}
 
 % Rational numbers
-\DeclareNumberSetCommand{RationalNumbers}{Q}
+\DeclareNumberSetCommand{\RationalNumbers}{Q}
 
 % Real Numbers
-\DeclareNumberSetCommand{RealNumbers}{R}
+\DeclareNumberSetCommand{\RealNumbers}{R}
 
 % Complex Numbers
-\DeclareNumberSetCommand{ComplexNumbers}{C}
+\DeclareNumberSetCommand{\ComplexNumbers}{C}
 
 \endinput
